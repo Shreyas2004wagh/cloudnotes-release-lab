@@ -4,21 +4,17 @@ WORKDIR /app
 COPY app/package.json ./
 RUN npm install --omit=dev
 
+COPY app/server.js ./server.js
+
 # --- Stage 2: runtime --------------------------------------------------------
 # Intended shape: copy only the installed node_modules + app source from the
 # "deps" stage above, so the final image stays small.
 FROM node:20-alpine AS runtime
 WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/server.js ./server.js
 
-# NOTE: this should copy from the "deps" stage, not "build" (no such stage
-# exists in this Dockerfile).
-COPY --from=build /app/node_modules ./node_modules
-COPY app/ ./
-
-# NOTE: secrets must never be baked into the image. This should be supplied
-# at runtime via an env file or Compose secret instead.
-ENV API_KEY=sk_live_examplekey123
 ENV PORT=8080
-
 EXPOSE 8080
+
 CMD ["node", "server.js"]

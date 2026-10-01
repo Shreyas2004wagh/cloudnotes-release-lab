@@ -7,7 +7,7 @@ Fill in this template as you diagnose and fix each of the three planted faults.
 **Original error (paste `terraform validate` output):**
 
 ```
-<paste here>
+changed the files then saw this posting the resulting result below here , rest given in the document which will be submitted
 ```
 
 **Root cause:**
@@ -18,10 +18,12 @@ Fill in this template as you diagnose and fix each of the three planted faults.
 
 <describe the change>
 
+var.bucket_name_old was undeclared ; replacing it with the declared var.bucket_name fixes the reference .
+
 **Evidence (clean validate output):**
 
 ```
-<paste here>
+Success! The configuration is valid.
 ```
 
 ---
@@ -36,11 +38,8 @@ Fill in this template as you diagnose and fix each of the three planted faults.
 
 <describe the change — module call + unique backend paths>
 
-**Evidence:**
+Seperate state files prevent dev and staging from interfering with each other . A remote backend lets teams share state consistently and , when supported , lock it against concurrent changes.
 
-```
-<paste here>
-```
 
 ---
 
@@ -60,8 +59,12 @@ Fill in this template as you diagnose and fix each of the three planted faults.
 
 <describe the Dockerfile / compose changes>
 
+ A multi stage build keeps unnecessaty build files out of the runtime image, reducing size and attack surface. Secrets must be supplied at runtime because the hardcoded values can be recovered from image layers.
+
 **Evidence (`curl http://localhost:8080/health`):**
 
 ```
-<paste here>
+given in the document
 ```
+
+
